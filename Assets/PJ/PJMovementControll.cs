@@ -9,6 +9,7 @@ using System.Collections;
 public class PJMovementControll : MonoBehaviour {
 
     private Animator anim;
+    public float corruptionLvl;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +20,8 @@ public class PJMovementControll : MonoBehaviour {
 	void Update ()
     {
         Move();
+        Atack();
+        Roll();
     }
     
     //Metodo que actualiza los valores de movimiento
@@ -29,5 +32,22 @@ public class PJMovementControll : MonoBehaviour {
         //Valor de giro izquieda y derecha
         anim.SetFloat("Turn", Input.GetAxis("Horizontal"));
         
+        //añadir movimiento con camara fija (strafe)
+
+
     }
+
+    void Atack()
+    {
+        anim.SetBool("Atack", Input.GetMouseButtonDown(0));
+        //Aplicar el nivel de corrupcion o lo que sea para decidir la animacion del ataque que se va a realizar
+        anim.SetFloat("CorruptionLvl", corruptionLvl);
+    }
+
+    void Roll()
+    {
+        if(Input.GetAxis("Vertical")>.1)
+            anim.SetBool("Roll", Input.GetKey(KeyCode.LeftShift));
+    }
+
 }
