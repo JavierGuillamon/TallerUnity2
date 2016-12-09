@@ -68,11 +68,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Attack_Script.cs" />
     <Compile Include="Assets\PJ\CameraControll.cs" />
     <Compile Include="Assets\PJ\CameraTest.cs" />
     <Compile Include="Assets\PJ\PJMovementControll.cs" />
     <Compile Include="Assets\PJ\Traget.cs" />
+    <Compile Include="Assets\Scripts\Attack_Script.cs" />
+    <Compile Include="Assets\Scripts\DetectEnemy.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\LookAtCamera.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

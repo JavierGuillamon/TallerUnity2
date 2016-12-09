@@ -32,6 +32,8 @@ public class PJMovementControll : MonoBehaviour {
     //punto incial de camara, vector rojo
     public Vector3 axisSign;
 
+    private bool attacking = false;
+
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();
@@ -49,7 +51,7 @@ public class PJMovementControll : MonoBehaviour {
         StickToWorldSpace(this.transform, cameraCntrl.transform, ref direction, ref speed);
         Turn();
          Move();
-         Atack();
+         Attack();
          Roll();
 /*
         if (canTurn && horizontal!=0)      
@@ -92,12 +94,12 @@ public class PJMovementControll : MonoBehaviour {
         anim.SetFloat("MoveZ", vertical);
     }
 
-    void Atack()
+    void Attack()
     {
-        anim.SetBool("Atack", Input.GetMouseButton(0));
-      
-        //Aplicar el nivel de corrupcion o lo que sea para decidir la animacion del ataque que se va a realizar
-        //anim.SetFloat("CorruptionLvl", corruptionLvl);
+       // if (!attacking)
+       // {
+            anim.SetBool("Atack", Input.GetMouseButton(0));
+        //}
     }
 
     void Roll()
@@ -146,5 +148,14 @@ public class PJMovementControll : MonoBehaviour {
     public bool IsInLocomotion()
     {
         return stateInfo.fullPathHash == m_locomotionId;
+    }
+
+    public void setAttacking()
+    {        
+        attacking = !attacking;
+    }
+    public bool getAttacking()
+    {
+        return attacking;
     }
 }

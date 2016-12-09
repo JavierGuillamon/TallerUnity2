@@ -74,12 +74,23 @@ public class Traget : MonoBehaviour {
         }
         
     }
-    void findEnemies()
+    public void stopTarget()
+    {
+        targets.Clear();      
+        anim.SetBool("Target", false);
+        pjMovCont.canTurn = true;
+        locked = false;
+        //selectedTarget.GetComponentInParent<Renderer>().sharedMaterial = materials[0];
+        enemySelect = 0;
+        findEnemies();
+    }
+    public void findEnemies()
     {
         GameObject[] go = GameObject.FindGameObjectsWithTag("Enemy");
         
         foreach(GameObject enemy in go)
         {
+            Debug.Log("a");
             targets.Add(enemy.transform);
             numberEnemys++; 
         }
