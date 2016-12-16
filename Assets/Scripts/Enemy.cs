@@ -30,8 +30,8 @@ public class Enemy : MonoBehaviour {
         Debug.Log("Health: " + health);
         if(health <= 0)
         {
+            //StartCoroutine(Destroy());
             Destroy(this.gameObject);
-            Debug.Log("AAA");
             target.stopTarget();
         }
     }

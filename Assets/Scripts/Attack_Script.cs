@@ -20,11 +20,17 @@ public class Attack_Script : MonoBehaviour {
 
     public void Attack(int attack)
     {
-
         coll.enabled = !coll.enabled;
         control.setAttacking();
         detect.setDamage(attacks[attack].damage);
+       // OnDrawGizmos();
         //Debug.Log("atacando: " + control.getAttacking()+" doing: "+attacks[attack].damage);
     }
 
+  /*  void OnDrawGizmos()
+    {
+        // Display the explosion radius when selected
+        Gizmos.color = new Color(1, 1, 0, 0.75F);
+        Gizmos.DrawCube(coll.center, coll.size);
+    }*/
 }

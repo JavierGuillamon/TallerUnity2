@@ -96,10 +96,10 @@ public class PJMovementControll : MonoBehaviour {
 
     void Attack()
     {
-       // if (!attacking)
-       // {
+       //if (!attacking)
+      // {
             anim.SetBool("Atack", Input.GetMouseButton(0));
-        //}
+      // }
     }
 
     void Roll()

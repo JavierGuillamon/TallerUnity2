@@ -12,6 +12,8 @@ public class Traget : MonoBehaviour {
     private Animator anim;
     [SerializeField]
     PJMovementControll pjMovCont;
+    [SerializeField]
+    private float speedRotation;
     //For unlock
     private float LastTap = 0;
     [SerializeField]
@@ -23,31 +25,30 @@ public class Traget : MonoBehaviour {
 
     private Transform tr;//transform del propio personaje
 
-    //bool locked = false;
-
     //lista de materiales de prueba para la seleccion de target
-    public Material[] materials;
+    [SerializeField]
+    private Material[] materials;
 
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();
-        targets = new List<Transform>();
         tr = transform;
         findEnemies();
-
     }
 	
 	// Update is called once per frame
 	void Update () {
         Target();
     }
+
     private void Target()
     {
-
-        if (locked) TargetEnemy(enemySelect);
+        
+        if (locked) TargetEnemy(enemySelect,0);
        
         if (Input.GetKeyDown(KeyCode.Tab))
         {
+            findEnemies();
             SortTargets();
             if (Time.time - LastTap < TapTime)
             {
@@ -59,6 +60,7 @@ public class Traget : MonoBehaviour {
             }
             else {
                 anim.SetBool("Target", true);
+                anim.SetFloat("Turn", 0);
                 pjMovCont.canTurn = false;
                 locked = true;
                 if (locked)
@@ -66,31 +68,27 @@ public class Traget : MonoBehaviour {
                     enemySelect++;
                     if (enemySelect >= numberEnemys)
                         enemySelect = 0;
-                    TargetEnemy(enemySelect);
+                    TargetEnemy(enemySelect,1);
                 }
                 LastTap = Time.time;
             }
-
-        }
-        
+        }       
     }
     public void stopTarget()
     {
-        targets.Clear();      
         anim.SetBool("Target", false);
         pjMovCont.canTurn = true;
         locked = false;
-        //selectedTarget.GetComponentInParent<Renderer>().sharedMaterial = materials[0];
         enemySelect = 0;
-        findEnemies();
     }
     public void findEnemies()
     {
+        targets = new List<Transform>();
+        numberEnemys = 0;
         GameObject[] go = GameObject.FindGameObjectsWithTag("Enemy");
         
         foreach(GameObject enemy in go)
         {
-            Debug.Log("a");
             targets.Add(enemy.transform);
             numberEnemys++; 
         }
@@ -103,7 +101,7 @@ public class Traget : MonoBehaviour {
         });
     }
 
-    private void TargetEnemy(int focus)
+    private void TargetEnemy(int focus, int tap)
     {
         if(selectedTarget != null)
         {
@@ -117,10 +115,17 @@ public class Traget : MonoBehaviour {
         Vector3 lookAtPosition = selectedTarget.position;
         lookAtPosition.y = transform.position.y;
 
-        //Quaternion rotation = Quaternion.LookRotation(lookAtPosition - transform.position);
-        //transform.rotation = Quaternion.Lerp(tr.rotation, rotation, Time.deltaTime * smooth);
-
-        transform.LookAt(lookAtPosition);
-
+        if (tap == 0)
+        {
+            transform.LookAt(lookAtPosition);
+        }
+        else
+        {
+            float step = speedRotation * Time.deltaTime;
+            Quaternion rotation = Quaternion.LookRotation(lookAtPosition);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, step);
+            Debug.Log("···");
+        }
     }
+    
 }
