@@ -73,7 +73,7 @@ public class CameraTest : MonoBehaviour
            
             y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
 
-           Vector3 axis= pjmc.axisSign;
+           //Vector3 axis= pjmc.axisSign;
 
             // x = ClampAngle(x, x_Angle_Izq, x_Angle_Der);
           

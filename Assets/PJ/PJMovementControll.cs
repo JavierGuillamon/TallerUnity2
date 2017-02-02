@@ -20,6 +20,8 @@ public class PJMovementControll : MonoBehaviour {
     private Transform trans;
     public bool canTurn=true;
 
+    [SerializeField]
+    private GameObject cameraInfo;
 
     private float speed = 0.0f;
     private float direction = 0f;
@@ -47,26 +49,49 @@ public class PJMovementControll : MonoBehaviour {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
+
+        Vector3 cameraOnGround = Vector3.ProjectOnPlane(cameraInfo.transform.right* horizontal + cameraInfo.transform.forward*vertical, Vector3.up).normalized;
+        float angle = Vector3.Angle(cameraOnGround, transform.forward);
+        Vector3 cross = Vector3.Cross(cameraOnGround, transform.forward);
+        if (cross.y > 0)
+        {
+            angle = -angle;
+        }
+        horizontal = angle / 90 * (cameraInfo.transform.right * horizontal + cameraInfo.transform.forward * vertical).magnitude;
+        vertical = (cameraOnGround - Vector3.ProjectOnPlane(cameraOnGround, transform.forward)).magnitude;
+        
         stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         StickToWorldSpace(this.transform, cameraCntrl.transform, ref direction, ref speed);
         Turn();
-         Move();
-         Attack();
-         Roll();
-/*
-        if (canTurn && horizontal!=0)      
-            anim.SetFloat("Turn", direction, directionDampTime, Time.deltaTime);
-        else if(horizontal != 0)
-            anim.SetFloat("MoveX", direction, directionDampTime, Time.deltaTime);
+        Move();
+        Attack();
+        Roll();
+        /*
+        Vector3 vectorCamera = transform.position- cameraInfo.transform.position;
+        Vector3 vectorCameraGround = Vector3.Normalize( Vector3.Project(vectorCamera, cameraInfo.transform.forward));
+        Debug.DrawRay(transform.forward, vectorCamera, Color.yellow);
+        Debug.DrawRay( transform.forward, vectorCameraGround, Color.black);
+        Vector3 vectorFoward = transform.forward;
+        float angleCameraPlayer = Vector3.Angle( vectorFoward, vectorCameraGround);
 
-        anim.SetFloat("MoveZ", vertical);
 
-        Debug.Log("Direccion: " + direction + " Speed: " + speed);*/
+        Debug.Log(angleCameraPlayer);*/
+
+
+        /*
+                if (canTurn && horizontal!=0)      
+                    anim.SetFloat("Turn", direction, directionDampTime, Time.deltaTime);
+                else if(horizontal != 0)
+                    anim.SetFloat("MoveX", direction, directionDampTime, Time.deltaTime);
+
+                anim.SetFloat("MoveZ", vertical);
+
+                Debug.Log("Direccion: " + direction + " Speed: " + speed);*/
         //anim.SetFloat("MoveX",speed);
 
         //anim.SetFloat("MoveZ", direction, directionDampTime,Time.deltaTime);
     }
-    
+
     void FixedUpdate()
     {
         if(IsInLocomotion()&& ((direction>=0 && horizontal>=0)|| (direction <0 && horizontal < 0)))
@@ -96,10 +121,10 @@ public class PJMovementControll : MonoBehaviour {
 
     void Attack()
     {
-       //if (!attacking)
-      // {
+       // if (!attacking)
+       // {
             anim.SetBool("Atack", Input.GetMouseButton(0));
-      // }
+        //}
     }
 
     void Roll()
@@ -124,10 +149,9 @@ public class PJMovementControll : MonoBehaviour {
         Vector3 moveDirection = referentialShift * stickDirection;
         axisSign = Vector3.Cross(moveDirection, rootDirection);
 
-        Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), moveDirection, Color.green);
-        Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), axisSign, Color.red);
-        Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), rootDirection, Color.magenta);
-       // Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), stickDirection, Color.blue);
+        //Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), axisSign, Color.red);
+       // Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), rootDirection, Color.magenta);
+       //Debug.DrawRay(new Vector3(root.position.x, root.position.y + 2f, root.position.z), stickDirection, Color.blue);
 
         float angleRootToMove = Vector3.Angle(rootDirection, moveDirection) * (axisSign.y >= 0 ? -1f : 1f);
        // angleRootToMove /= 180f;
