@@ -82,14 +82,15 @@
   <ItemGroup>
     <Compile Include="Assets\PJ\CameraControll.cs" />
     <Compile Include="Assets\PJ\CameraTest.cs" />
+    <Compile Include="Assets\PJ\Health.cs" />
     <Compile Include="Assets\PJ\PJMovementControll.cs" />
     <Compile Include="Assets\PJ\Traget.cs" />
     <Compile Include="Assets\Scripts\Attack_Script.cs" />
     <Compile Include="Assets\Scripts\DetectEnemy.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\Enemy\PlayerDettect.cs" />
     <Compile Include="Assets\Scripts\LookAtCamera.cs" />
-    <Compile Include="Assets\Scripts\PlayerDettect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

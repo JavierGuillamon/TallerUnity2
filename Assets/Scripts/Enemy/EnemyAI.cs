@@ -11,14 +11,22 @@ public class EnemyAI : MonoBehaviour {
         Patrolling,
         Attacking
     };
-    public Transform Player;
-    public Transform[] wayPoints;
-    NavMeshAgent agent;
-    public float distanceAttack;
+    [SerializeField]
+    private Transform objective;
+    [SerializeField]
+    private Transform[] wayPoints;
+    private NavMeshAgent agent;
+    [SerializeField]
+    private float distanceAttack;
     private Estados curEst;
     private int wpIndex=0;
     private Transform curWP;
-
+    [SerializeField]
+    private Health playerhealth;
+    [SerializeField]
+    private float damage;
+    [SerializeField]
+    private float coolDown;
     // Use this for initialization
     void Start () {
         curEst = Estados.Patrolling;
@@ -41,7 +49,7 @@ public class EnemyAI : MonoBehaviour {
     void Patrolling()
     {
         agent.destination = wayPoints[wpIndex].position;
-        Debug.Log(Vector3.Distance(transform.position, wayPoints[wpIndex].position));
+       // Debug.Log(Vector3.Distance(transform.position, wayPoints[wpIndex].position));
         if (Vector3.Distance(transform.position, wayPoints[wpIndex].position)<0.5f)
         {
            
@@ -54,29 +62,40 @@ public class EnemyAI : MonoBehaviour {
     
     void Chase()
     {
-        if (Vector3.Distance(transform.position, Player.position) < distanceAttack)
+        if (Vector3.Distance(transform.position, objective.position) < distanceAttack)
             curEst = Estados.Attacking;
         else
-            agent.SetDestination(Player.position);
+            agent.SetDestination(objective.position);
     }
 
     void Attack()
     {
-        if (Vector3.Distance(transform.position, Player.position) > distanceAttack)
+        if (Vector3.Distance(transform.position, objective.position) > distanceAttack)
             curEst = Estados.Chase;
         else
-            Debug.Log("PEW PEW AAAA OUUUCH");
+            StartCoroutine(waitAndAtack(coolDown));
+    }
+    bool aux = true;
+    private IEnumerator waitAndAtack(float waitTime)
+    {
+        while (aux)
+        {
+            aux = false;
+            yield return new WaitForSeconds(waitTime);
+            playerhealth.doDamage(damage);
+            aux = true;
+        }
     }
 
-    public void setEstAttck(bool est)
+    public void setObjective(Transform setObjective)
     {
-        if (est)
-        {
-            curEst = Estados.Chase;
-        }
+       // Debug.Log("OBJJJJ");
+        if(setObjective == null)
+            curEst = Estados.Patrolling;
         else
         {
-            curEst = Estados.Patrolling;
+            objective = setObjective;
+            curEst = Estados.Chase;
         }
     }
 }

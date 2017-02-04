@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDettect : MonoBehaviour {
-    public EnemyAI ai;
-	
+    [SerializeField]
+    private EnemyAI ai;
+
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag =="Player")
-            ai.setEstAttck(true);
+        if (other.tag == "Player")
+        {
+            ai.setObjective(other.gameObject.transform);
+        }
     }
+
 
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
-            ai.setEstAttck(false);
+        {
+            ai.setObjective(null);
+        }
     }
 }
